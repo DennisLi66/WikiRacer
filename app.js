@@ -25,6 +25,12 @@ app.use(cookieParser());
 //FIX THIS ADD DOTENV FILE
 //FIX THIS ADD PROPER MYSQL FOR HIGH SCORES
 
+app.get("/",function(req,res){
+  res.render("front",{
+    banner: "WikiRacer"
+  });
+})
+
 app.listen(3000, function() {
   console.log("Server Started.")
 });
