@@ -6,6 +6,8 @@ const mysql = require('mysql');
 const bcrypt = require('bcrypt');
 const randomatic = require('randomatic');
 
+// import getPoints from '/javascript/sampleArticles.js'
+
 const app = express();
 app.use(express.static("public"));
 app.set('view engine', 'ejs');
@@ -32,11 +34,17 @@ app.get("/",function(req,res){
 })
 
 app.get("/description",function(req,res){
+
   res.render("description",{
     banner: "What is WikiRacer?"
   })
 })
 
+app.get("/wikiracer",function(req,res){
+  res.render("wikiracer",{
+    banner:"WikiRacer"
+  })
+})
 
 
 app.listen(3000, function() {
