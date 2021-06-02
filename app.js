@@ -31,6 +31,14 @@ app.get("/",function(req,res){
   });
 })
 
+app.get("/description",function(req,res){
+  res.render("description",{
+    banner: "What is WikiRacer?"
+  })
+})
+
+
+
 app.listen(3000, function() {
   console.log("Server Started.")
 });
