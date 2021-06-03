@@ -1,8 +1,16 @@
 <%- include('headFoot/header') %>
 <script src="/javascript/sampleArticles.js"></script>
-
-Either put down two links/wikipedia article titles, or press random
-
-<button onclick="getTwoArticles()" class="btn"> Random Two Articles </button>
+<script src="/javascript/accessWikipedia.js"></script>
+<div id="notices"></div>
+<h1> WikiRacer </h1>
+If you have two Wikipedia articles in mind, you can put their article title or web addresses here.
+<br>
+<label for="start">Starting Wikipedia Article:</label><br>
+<input id='startPoint' name="start"><br>
+<label for="end">Ending Wikipedia Article: </label><br>
+<input id='endPoint' name="end"><br>
+<button onclick="extractUserInputs()" class="btn btn-dark">Confirm Choices</button>
+<br>
+<button onclick="getTwoArticles()" class="btn btn-dark"> Random Two Articles </button>
 
 <%- include('headFoot/footer') %>
