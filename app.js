@@ -5,7 +5,7 @@ const cookieParser = require('cookie-parser');
 const mysql = require('mysql');
 const bcrypt = require('bcrypt');
 const randomatic = require('randomatic');
-
+const wiki = require("wikijs")
 // import getPoints from '/javascript/sampleArticles.js'
 
 const app = express();
@@ -45,7 +45,10 @@ app.get("/wikiracer",function(req,res){
     banner:"WikiRacer"
   })
 })
-
+app.post("/wikiracer",function(req,res){
+  //read to see if start and ends are valid using wikijs
+  res.send("http://localhost:3000/")
+})
 
 app.listen(3000, function() {
   console.log("Server Started.")
