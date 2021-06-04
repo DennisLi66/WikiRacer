@@ -64,22 +64,23 @@ function getTwoArticlesChaos() {
   while (start == end) {
     end = Math.floor(Math.random() * articles.length);
   }
-  start2End["start"] = articles[start];
-  start2End["end"] = articles[end];
-  //get 2 random values that are not the same
-  //get those values out of articles and map them to this function
-  console.log(start2End);
-  return start2End;
+  // start2End["start"] = articles[start];
+  // start2End["end"] = articles[end];
+  // console.log(start2End);
+  // return start2End;
+  document.getElementById("startPoint").value = articles[start];
+  document.getElementById("endPoint").value = articles[end];
+  document.getElementById("wikiForm").submit();
 }
 function getTwoArticlesFair(){
   var start2End = {};
   start = Math.floor(Math.random() * goodStarts.length);
   end = Math.floor(Math.random() * goodEnds.length);
-  start2End["start"] = goodStarts[start];
-  start2End["end"] = goodEnds[end];
-  console.log(start2End);
-  return start2End;
-}
-function getTwoTrueRandom(){
-  //ADD LATER
+  // start2End["start"] = goodStarts[start];
+  // start2End["end"] = goodEnds[end];
+  // console.log(start2End);
+  // return start2End;
+  document.getElementById("startPoint").value = articles[start];
+  document.getElementById("endPoint").value = articles[end];
+  document.getElementById("wikiForm").submit();
 }

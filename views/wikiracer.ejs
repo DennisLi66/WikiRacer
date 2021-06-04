@@ -5,15 +5,19 @@
 <h1> WikiRacer </h1>
 If you have two Wikipedia articles in mind, you can put their article titles here.
 <br>
+<form action='/checkit' method="get" id='wikiForm'>
+<input type='hidden' name='random' id='random' value='false'></input>
 <label for="start">Starting Wikipedia Article:</label><br>
 <input id='startPoint' name="start"><br>
 <label for="end">Ending Wikipedia Article: </label><br>
 <input id='endPoint' name="end"><br>
+</form>
 <button onclick="extractUserInputs()" class="btn btn-dark">Confirm Choices</button>
 <br>
 <button onclick="getTwoArticlesFair()" class="btn btn-dark"> Two Fair Random Curated Articles </button>
 <br>
 <button onclick="getTwoArticlesChaos()" class="btn btn-dark"> Any Two Random Curated Articles </button>
 <br>
-<button onclick="" class="btn btn-dark"> ANY Two Random Wikipedia Articles </button
+<button onclick="" class="btn btn-dark"> ANY Two Random Wikipedia Articles </button>
+
 <%- include('headFoot/footer') %>

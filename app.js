@@ -46,8 +46,19 @@ app.get("/wikiracer",function(req,res){
   })
 })
 app.post("/wikiracer",function(req,res){
+  
+})
+
+app.get("/checkit",function(req,res){
   //read to see if start and ends are valid using wikijs
-  res.send("http://localhost:3000/")
+  //may need to replace .replace(/ /g,"_")
+  console.log(req.query.random);
+  console.log(req.query.start);
+  console.log(req.query.end);
+  res.send("http://localhost:3000/description")
+})
+app.get("/wikiracer/game",function(req,res){
+
 })
 
 app.listen(3000, function() {
