@@ -1,21 +1,36 @@
 var articles = [
-  "Abraham Lincoln",
-  "Derek Yu",
-  "Jason Mraz",
+  "Abraham_Lincoln",
+  // "Derek Yu",
+  // "Jason Mraz",
   "Nintendo",
-  "Jimi Hendrix",
+  "Jimi_Hendrix",
   "Cashew",
   "Javascript",
   "Ikea",
-  "M. Night Shyamalan",
-  "Walt Disney",
+  "Nitrogen",
+  'Georgia_(Country)',
+  "Tornado",
+  "Count_Dracula",
+  "Marie Curie",
+  "Napkin",
+  "Raid:_Shadow_Legends",
+  // "M. Night Shyamalan",
+  // "Walt Disney",
   "Dentistry",
-  "Aura_(paranormal)",
-  "Artificial intelligence",
+  // "Aura_(paranormal)",
+  // "Artificial intelligence",
   "Emu",
   "Parkour",
-  "Paradox",
+  // "Paradox",
   "Neolithic Revolution"
+]
+
+var goodStarts = [
+
+]
+
+var goodEnds = [
+
 ]
 
 function getTwoArticles(){

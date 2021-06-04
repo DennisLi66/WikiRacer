@@ -1,0 +1,7 @@
+^((en.)?wikipedia.org\/wiki\/).+$
+
+
+https://en.wikipedia.org/wiki/Abraham_Lincoln
+en.wikipedia.org/wiki/Abraham_Lincoln
+wikipedia.org/wiki/Abraham_Lincoln
+https://wikipedia.org/wiki/Abraham_Lincoln
