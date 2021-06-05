@@ -5,7 +5,7 @@ const cookieParser = require('cookie-parser');
 const mysql = require('mysql');
 const bcrypt = require('bcrypt');
 const randomatic = require('randomatic');
-const wiki = require("wikijs")
+const wiki = require('wikijs').default;
 // import getPoints from '/javascript/sampleArticles.js'
 
 const app = express();
@@ -46,19 +46,36 @@ app.get("/wikiracer",function(req,res){
   })
 })
 app.post("/wikiracer",function(req,res){
-  
+
 })
 
 app.get("/checkit",function(req,res){
   //read to see if start and ends are valid using wikijs
   //may need to replace .replace(/ /g,"_")
-  console.log(req.query.random);
-  console.log(req.query.start);
-  console.log(req.query.end);
-  res.send("http://localhost:3000/description")
+  var random = req.query.random;
+  console.log(random);
+  if (req.query.random === 'true'){
+    console.log("Accessing WikiJS for randomization...");
+    wiki().random(2).then(results => {
+      var start = results[0].replace(/ /g,"_");
+      var end = results[1].replace(/ /g,"_");
+      console.log(start);
+      console.log(end);
+      res.redirect("/wikiracer/game?start=" + start + "&end=" + end);
+    }
+    );
+  }
+  else{
+    console.log("Accessing WikiJS for checking...")
+    console.log(req.query.start);
+    console.log(req.query.end);
+  }
+  //if bad send to error page on render
+  //res.send("http://localhost:3000/description")
 })
 app.get("/wikiracer/game",function(req,res){
-
+  console.log(req.query.start);
+  console.log(req.query.end);
 })
 
 app.listen(3000, function() {

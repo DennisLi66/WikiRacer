@@ -30,7 +30,3 @@ function extractUserInputs(){
     `;
   }
 }
-
-function randomArticles(){
-
-}

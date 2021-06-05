@@ -84,3 +84,7 @@ function getTwoArticlesFair(){
   document.getElementById("endPoint").value = articles[end];
   document.getElementById("wikiForm").submit();
 }
+function getTrueChaos(){
+  document.getElementById('random').value = 'true';
+  document.getElementById('wikiForm').submit();
+}
