@@ -43,7 +43,8 @@ app.get("/description",function(req,res){
 
 app.get("/wikiracer",function(req,res){
   res.render("wikiracer",{
-    banner:"WikiRacer"
+    banner:"WikiRacer",
+    errorMsg: 'hidden'
   })
 })
 app.post("/wikiracer",function(req,res){
@@ -68,8 +69,33 @@ app.get("/checkit",function(req,res){
   }
   else{
     console.log("Accessing WikiJS for checking...")
-    console.log(req.query.start);
-    console.log(req.query.end);
+    var start = req.query.start;
+    var end = req.query.end;
+    console.log(start);
+    console.log(end);
+    wiki().page(start).then(page => {
+      console.log("The start was valid.");
+      wiki().page(end).then(page1 => {
+        console.log("The end was valid.");
+        console.log(page1)
+        //FIX THIS: Redirect off a disambiguation page, possibly use the first hyperlink
+        //FIX THIS, Proper Redirecting
+      })
+      .catch(function(error){
+          console.log("Failure");
+          res.render("wikiracer",{
+            banner:"WikiRacer",
+            errorMsg: ''
+          })
+      })
+    })
+    .catch(function(error){
+        console.log("Failure");
+        res.render("wikiracer",{
+          banner:"WikiRacer",
+          errorMsg: ''
+        })
+    })
   }
   //if bad send to error page on render
   //res.send("http://localhost:3000/description")
