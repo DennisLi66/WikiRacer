@@ -1,0 +1,67 @@
+app.get("/checkit",function(req,res){
+  var random = req.query.random;
+  // console.log(random);
+  if (req.query.random === 'true'){
+    console.log("Accessing WikiJS for randomization...");
+    wiki().random(2).then(results => {
+      var start = results[0].replace(/ /g,"_");
+      var end = results[1].replace(/ /g,"_");
+      console.log(start);
+      console.log(end);
+      res.redirect("/wikiracer/game?start=" + start + "&end=" + end);
+    }
+    );
+  }
+  else{
+    console.log("Accessing WikiJS for checking...")
+    var start = req.query.start;
+    var end = req.query.end;
+    var isError = false;
+    var startDisambiguation = false;
+    var endDisambiguation = false;
+    var startList = [];
+    var endList = [];
+    wiki().page(start).then(page => {
+      if (page.pageprops && 'disambiguation' in page.pageprops){
+        console.log("Start Needs Disambiguation");
+          page.links().then(links =>{
+            startDisambiguation = true;
+            startList = links;
+          });
+      }
+      wiki().page(end).then(page1 => {
+        if (page1.pageprops && 'disambiguation' in page1.pageprops){
+          //move off of disambiguation
+          console.log("End Needs Disambiguation");
+          page1.links().then(links => {
+            endDisambiguation = true;
+            endList = true;
+            // console.log(endList);
+          })
+          .then(function(){
+            //redirect page here
+            console.log("Hello after End");
+            // res.render('');
+          });
+        }
+      },function(error){
+          console.log("Failure");
+          isError = true;
+          res.render("wikiracer",{
+            banner:"WikiRacer",
+            errorMsg: ''
+          })
+      })
+    },function(error){
+        console.log("Failure");
+        isError = true;
+        res.render("wikiracer",{
+          banner:"WikiRacer",
+          errorMsg: ''
+        })})
+        .then(function(){
+          if (isError)
+          console.log("Hello from no disambiguation");
+        })
+  }
+})
