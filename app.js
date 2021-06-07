@@ -70,35 +70,42 @@ app.get("/checkit",function(req,res){
     var isError = false;
     var start = req.query.start;
     var end = req.query.end;
-    var sDisambiguation = false;
-    var eDisambiguation = false;
     var startList = [];
-    //1: Access Start Page
     wiki().page(start).then(
       page => {
-        console.log("Start Worked, so testing end");
         if (page.pageprops && 'disambiguation' in page.pageprops){
-          console.log("Start Needs Disambiguation");
           page.links().then(links =>{
-            sDisambiguation = true;
             startList = links;
           }).finally(function(){
-            console.log("Moving on to End");
             wiki().page(end).then(
               page => {
-                console.log("End Worked");
                 if (page.pageprops && 'disambiguation' in page.pageprops){
-                  console.log("End Needs Disambiguation");
                   page.links().then(links =>{
-                    sDisambiguation = true;
-                    startList = links;
+                    endList = links;
                     console.log("Both Start and End Were ambiguous");
+                    res.render('disambiguation',{
+                      banner: 'Workspace: Disambiguation',
+                      startTerm: start,
+                      sAmbiguous: true,
+                      sList: startList,
+                      endTerm: end,
+                      eAmbiguous: true,
+                      eList: endList
+                    })
                   });
                 }else{
-                  console.log("Only Start Was Ambiguous")
+                  console.log("Only Start Was Ambiguous");
+                  res.render('disambiguation',{
+                    banner: 'Workspace: Disambiguation',
+                    startTerm: start,
+                    sAmbiguous: true,
+                    sList: startList,
+                    endTerm: end,
+                    eAmbiguous: false,
+                    eList: []
+                  })
                 }
               }, error => {
-                console.log("End Failed");
                 res.render("wikiracer",{
                           banner:"WikiRacer",
                           errorMsg: ''
@@ -108,24 +115,32 @@ app.get("/checkit",function(req,res){
           });
         }
         else{
-          console.log("Start was not ambiguous");
           wiki().page(end).then(
             page => {
-              console.log("End Worked");
-
               if (page.pageprops && 'disambiguation' in page.pageprops){
-                console.log("End Needs Disambiguation");
                 page.links().then(links =>{
-                  sDisambiguation = true;
-                  startList = links;
+                  endList = links;
                   console.log("Only End was ambiguous");
+                  res.render('disambiguation',{
+                    banner: 'Workspace: Disambiguation',
+                    startTerm: start,
+                    sAmbiguous: false,
+                    sList: [],
+                    endTerm: end,
+                    eAmbiguous: true,
+                    eList: endList
+                  })
                 });
               }else{
                 //FIX THIS CHECK IF START NEEDS
-                console.log("Nobody was ambiguous")
+                console.log("Nobody was ambiguous");
+                res.render('wikiRacerStart',{
+                  banner: 'WikiRacer: Game',
+                  start: start,
+                  end: end
+                })
               }
             }, error => {
-              console.log("End Failed");
               res.render("wikiracer",{
                         banner:"WikiRacer",
                         errorMsg: ''
@@ -134,31 +149,13 @@ app.get("/checkit",function(req,res){
           )
         }
       },error => {
-        console.log('Start Failed');
         res.render("wikiracer",{
                   banner:"WikiRacer",
                   errorMsg: ''
                 });
   })
 }
-    // .finally(function(){
-    //   if (!isError){
-    //     wiki().page(end).then(function(){
-    //       console.log("End Worked")
-    //     },function(error){
-    //       console.log("End Failed");
-    //       isError = true;
-    //     })
-    //     // .then(function(){
-    //     //   if (!isError && (sDisambiguation || eDisambiguation)){
-    //     //     console.log("Still Ambiguous");
-    //     //   }
-    //     //   else if (!isError && !sDisambiguation && !eDisambiguation){
-    //     //     console.log("Not Ambiguous");
-    //     //   }
-    //     // })
-    //   }
-    // })
+
 
 
 })
