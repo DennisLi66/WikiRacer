@@ -72,21 +72,67 @@ app.get("/checkit",function(req,res){
     var end = req.query.end;
     var sDisambiguation = false;
     var eDisambiguation = false;
+    var startList = [];
     //1: Access Start Page
     wiki().page(start).then(
       page => {
         console.log("Start Worked, so testing end");
-        wiki().page(end).then(
-          page => {
-            console.log("End Worked")
-          }, error => {
-            console.log("End Failed");
-            res.render("wikiracer",{
-                      banner:"WikiRacer",
-                      errorMsg: ''
-                    });
-          }
-        )
+        if (page.pageprops && 'disambiguation' in page.pageprops){
+          console.log("Start Needs Disambiguation");
+          page.links().then(links =>{
+            sDisambiguation = true;
+            startList = links;
+          }).finally(function(){
+            console.log("Moving on to End");
+            wiki().page(end).then(
+              page => {
+                console.log("End Worked");
+                if (page.pageprops && 'disambiguation' in page.pageprops){
+                  console.log("End Needs Disambiguation");
+                  page.links().then(links =>{
+                    sDisambiguation = true;
+                    startList = links;
+                    console.log("Both Start and End Were ambiguous");
+                  });
+                }else{
+                  console.log("Only Start Was Ambiguous")
+                }
+              }, error => {
+                console.log("End Failed");
+                res.render("wikiracer",{
+                          banner:"WikiRacer",
+                          errorMsg: ''
+                        });
+              }
+            )
+          });
+        }
+        else{
+          console.log("Start was not ambiguous");
+          wiki().page(end).then(
+            page => {
+              console.log("End Worked");
+
+              if (page.pageprops && 'disambiguation' in page.pageprops){
+                console.log("End Needs Disambiguation");
+                page.links().then(links =>{
+                  sDisambiguation = true;
+                  startList = links;
+                  console.log("Only End was ambiguous");
+                });
+              }else{
+                //FIX THIS CHECK IF START NEEDS
+                console.log("Nobody was ambiguous")
+              }
+            }, error => {
+              console.log("End Failed");
+              res.render("wikiracer",{
+                        banner:"WikiRacer",
+                        errorMsg: ''
+                      });
+            }
+          )
+        }
       },error => {
         console.log('Start Failed');
         res.render("wikiracer",{
