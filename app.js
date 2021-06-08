@@ -65,7 +65,7 @@ app.get("/checkit",function(req,res){
     }
     );
   }
-  else{
+  else if (req.query.random === 'false' && req.query.start && req.query.end){
     console.log("Accessing WikiJS for checking...")
     var isError = false;
     var start = req.query.start;
@@ -154,6 +154,9 @@ app.get("/checkit",function(req,res){
                   errorMsg: ''
                 });
   })
+}
+else{
+  res.redirect("/wikiracer");
 }
 
 

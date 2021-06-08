@@ -1,8 +1,24 @@
 <%- include('headFoot/header') %>
 
+Return to Selection
+<br>
+<% if (!sAmbiguous){%>
+  Your starting point, <%= startTerm %>, was not ambiguous, so there is no need to change it.
+<% } %>
 
+<% if (!eAmbiguous){%>
+  Your ending point, <%= endTerm %>, was not ambiguous, so there is no need to change it.
+<% } %>
 
-
+<form>
+<% if (sAmbiguous){ %>
+  Your starting point, <%= startTerm %>, was ambiguous. You're going to need to be more specific. Here are options based on your starting point.
+  <% } %>
+  <% if (eAmbiguous){%>
+    Your ending point, <%= endTerm %>, was ambiguous. You're going to need to be more specific. Here are options based on your ending point.
+  <% } %>
+Submit Button
+</form>
 
 
 <%- include('headFoot/footer') %>
