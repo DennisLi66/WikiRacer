@@ -175,6 +175,9 @@ app.route("wikiracer/start")
     })
   })
 
+app.get("/2pages",function(req,res){})
+
+
 app.listen(3000, function() {
   console.log("Server Started.")
 });
