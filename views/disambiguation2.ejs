@@ -3,17 +3,17 @@
 Return to Selection
 <br>
 <% if (!sAmbiguous){%>
-Your starting point, <%= startTerm %>, was not ambiguous, so there is no need to change it.
+Your first starting point, <%= startTerm %>, was not ambiguous, so there is no need to change it.
 <% } %>
 
 <% if (!eAmbiguous){%>
-Your ending point, <%= endTerm %>, was not ambiguous, so there is no need to change it.
+Your second starting point, <%= endTerm %>, was not ambiguous, so there is no need to change it.
 <% } %>
 
-<form action='/checkit' method="get" id='wikiForm'>
+<form action='/checkit2' method="get" id='wikiForm'>
   <input type='hidden' name='random' value='false'>
   <% if (sAmbiguous && eAmbiguous){ %>
-  Your starting point, <%= startTerm %>, was ambiguous. You're going to need to be more specific. Here are options based on your starting point.
+  Your first starting point, <%= startTerm %>, was ambiguous. You're going to need to be more specific. Here are options based on your starting point.
   <br>
   <select name='start' id='startSelect'>
     <% for(x in sList){ %>
@@ -21,7 +21,7 @@ Your ending point, <%= endTerm %>, was not ambiguous, so there is no need to cha
     <% } %>
   </select>
   <br>
-  Your ending point, <%= endTerm %>, was ambiguous. You're going to need to be more specific. Here are options based on your ending point.
+  Your second starting point, <%= endTerm %>, was ambiguous. You're going to need to be more specific. Here are options based on your ending point.
   <br>
   <select name='end' id='endSelect'>
     <% for(x in eList){ %>
@@ -30,7 +30,7 @@ Your ending point, <%= endTerm %>, was not ambiguous, so there is no need to cha
   </select>
   <% } else if (sAmbiguous){ %>
   <input type='hidden' name='end' value='<%= endTerm %>'>
-  Your starting point, <%= startTerm %>, was ambiguous. You're going to need to be more specific. Here are options based on your starting point.
+  Your first starting point, <%= startTerm %>, was ambiguous. You're going to need to be more specific. Here are options based on your starting point.
   <br>
   <select name='start' id='startSelect'>
     <% for(x in sList){ %>
@@ -38,8 +38,8 @@ Your ending point, <%= endTerm %>, was not ambiguous, so there is no need to cha
     <% } %>
   </select>
   <% } else if (eAmbiguous){ %>
-          <input type='hidden' name='start' value='<%= startTerm %>'>
-  Your ending point, <%= endTerm %>, was ambiguous. You're going to need to be more specific. Here are options based on your ending point.
+      <input type='hidden' name='start' value='<%= startTerm %>'>
+  Your second starting point, <%= endTerm %>, was ambiguous. You're going to need to be more specific. Here are options based on your ending point.
   <br>
   <select name='end' id='endSelect'>
     <% for(x in eList){ %>
