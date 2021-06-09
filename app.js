@@ -175,7 +175,12 @@ app.route("wikiracer/start")
     })
   })
 
-app.get("/2pages",function(req,res){})
+app.get("/2pages",function(req,res){
+  res.render('2pages',{
+    banner: "WikiRacer: 2Pages",
+    errorMsg: 'hidden'
+  })
+})
 
 
 app.listen(3000, function() {

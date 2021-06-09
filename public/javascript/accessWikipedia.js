@@ -30,3 +30,7 @@ function extractUserInputs(){
     `;
   }
 }
+
+function extractStarts(){
+  
+}
