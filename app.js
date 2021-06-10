@@ -29,24 +29,24 @@ app.use(cookieParser());
 //FIX THIS ADD PROPER MYSQL FOR HIGH SCORES
 
 app.get("/", function(req, res) {
-  req.clearCookie('pages');
-  req.clearCookie('wikiracer');
+  res.clearCookie('pages');
+  res.clearCookie('wikiracer');
   res.render("front", {
     banner: "WikiRacer"
   });
 })
 
 app.get("/description", function(req, res) {
-  req.clearCookie('pages');
-  req.clearCookie('wikiracer');
+  res.clearCookie('pages');
+  res.clearCookie('wikiracer');
   res.render("description", {
     banner: "What is WikiRacer?"
   })
 })
 
 app.get("/wikiracer", function(req, res) {
-  req.clearCookie('pages');
-  req.clearCookie('wikiracer');
+  res.clearCookie('pages');
+  res.clearCookie('wikiracer');
   if (req.cookies.wikiracer){
     res.redirect("/wikiracer/game");
   }
@@ -68,8 +68,9 @@ app.get("/checkit", function(req, res) {
       console.log(start);
       console.log(end);
       let cookieObj = {
-        start: start,
-        end: end
+        current: start,
+        end: end,
+        steps: 0
       }
       res.cookie("wikiracer",cookieObj);
       res.redirect("/wikiracer/game");
@@ -142,8 +143,9 @@ app.get("/checkit", function(req, res) {
               } else {
                 console.log("Nobody was ambiguous");
                 let cookieObj = {
-                  start: start,
-                  end: end
+                  current: start,
+                  end: end,
+                  steps: 0
                 }
                 res.cookie("wikiracer",cookieObj);
                 res.redirect("/wikiracer/game");
@@ -180,8 +182,9 @@ app.get("/checkit2", function(req, res) {
       console.log(start);
       console.log(end);
       let cookieObj = {
-        start: start,
-        end: end
+        cLeft: start,
+        cRight: end,
+        steps: 0
       }
       res.cookie("pages",cookieObj);
       res.redirect("/2pages/game");
@@ -254,8 +257,9 @@ app.get("/checkit2", function(req, res) {
               } else {
                 console.log("Nobody was ambiguous");
                 let cookieObj = {
-                  start1: start,
-                  start2: end
+                  cLeft: start,
+                  cRight: end,
+                  steps: 0
                 }
                 res.cookie("pages",cookieObj);
                 res.redirect("/2pages/game");
@@ -282,13 +286,16 @@ app.get("/checkit2", function(req, res) {
 })
 
 app.get("/wikiracer/game", function(req, res) {
-  req.clearCookie('pages');
+  res.clearCookie('pages');
   if (!res.cookie.wikiracer){
     console.log("Not Allowed!")
     res.redirect("/wikiracer");
   }else{
     res.render("wikiRacerGame",{
-      banner: "WikiRacer: Game"
+      banner: "WikiRacer: Game",
+      current: req.cookies.wikiracer.current,
+      end: req.cookies.wikiracer.end,
+      steps: req.cookies.wikiracer.steps
     })
   }
 })
@@ -310,7 +317,10 @@ app.get("/2pages/game",function(req,res){
     res.redirect("/2pages")
   }else{
     res.render("2pagesGame",{
-      banner: "2Pages: Game"
+      banner: "2Pages: Game",
+      cLeft: req.cookies.pages.cLeft,
+      cRight: req.cookies.pages.cRight,
+      steps: req.cookies.pages.steps
     })
   }
 })
