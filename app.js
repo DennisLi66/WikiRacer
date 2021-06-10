@@ -8,6 +8,7 @@ const bcrypt = require('bcrypt');
 const randomatic = require('randomatic');
 const wiki = require('wikijs').default;
 // import getPoints from '/javascript/sampleArticles.js'
+//Maybe check that the starting points arent the same FIX THIS
 
 const app = express();
 app.use(express.static("public"));
@@ -47,15 +48,14 @@ app.get("/description", function(req, res) {
 app.get("/wikiracer", function(req, res) {
   res.clearCookie('pages');
   res.clearCookie('wikiracer');
-  if (req.cookies.wikiracer){
+  if (req.cookies.wikiracer) {
     res.redirect("/wikiracer/game");
+  } else {
+    res.render("wikiracer", {
+      banner: "WikiRacer",
+      errorMsg: 'hidden'
+    })
   }
-  else{
-  res.render("wikiracer", {
-    banner: "WikiRacer",
-    errorMsg: 'hidden'
-  })
-}
 })
 app.get("/checkit", function(req, res) {
   var random = req.query.random;
@@ -68,11 +68,12 @@ app.get("/checkit", function(req, res) {
       console.log(start);
       console.log(end);
       let cookieObj = {
+        start: start,
         current: start,
         end: end,
         steps: 0
       }
-      res.cookie("wikiracer",cookieObj);
+      res.cookie("wikiracer", cookieObj);
       res.redirect("/wikiracer/game");
     });
   } else if (random === 'false' && req.query.start && req.query.end) {
@@ -143,11 +144,12 @@ app.get("/checkit", function(req, res) {
               } else {
                 console.log("Nobody was ambiguous");
                 let cookieObj = {
+                  start: start,
                   current: start,
                   end: end,
                   steps: 0
                 }
-                res.cookie("wikiracer",cookieObj);
+                res.cookie("wikiracer", cookieObj);
                 res.redirect("/wikiracer/game");
               }
             }, error => {
@@ -182,11 +184,13 @@ app.get("/checkit2", function(req, res) {
       console.log(start);
       console.log(end);
       let cookieObj = {
+        lStart: start,
+        rStart: end,
         cLeft: start,
         cRight: end,
         steps: 0
       }
-      res.cookie("pages",cookieObj);
+      res.cookie("pages", cookieObj);
       res.redirect("/2pages/game");
     });
   } else if (random === 'false' && req.query.start && req.query.end) {
@@ -257,11 +261,13 @@ app.get("/checkit2", function(req, res) {
               } else {
                 console.log("Nobody was ambiguous");
                 let cookieObj = {
+                  lStart: start,
+                  rStart: end,
                   cLeft: start,
                   cRight: end,
                   steps: 0
                 }
-                res.cookie("pages",cookieObj);
+                res.cookie("pages", cookieObj);
                 res.redirect("/2pages/game");
               }
             }, error => {
@@ -287,41 +293,64 @@ app.get("/checkit2", function(req, res) {
 
 app.get("/wikiracer/game", function(req, res) {
   res.clearCookie('pages');
-  if (!res.cookie.wikiracer){
+  if (!req.cookies.wikiracer) {
     console.log("Not Allowed!")
     res.redirect("/wikiracer");
-  }else{
-    res.render("wikiRacerGame",{
-      banner: "WikiRacer: Game",
-      current: req.cookies.wikiracer.current,
-      end: req.cookies.wikiracer.end,
-      steps: req.cookies.wikiracer.steps
-    })
+  } else {
+    var current = req.cookies.wikiracer.current;
+    var end = req.cookies.wikiracer.end;
+    if (current === end) {
+      //redirect to victory page
+      res.render("wikiRacerVictory", {
+        banner: "WikiRacer: Game - Victory!",
+        start: req.cookies.wikiracer.start,
+        end: req.cookies.wikiracer.end,
+        steps: req.cookies.wikiracer.steps
+      })
+    } else {
+      res.render("wikiRacerGame", {
+        banner: "WikiRacer: Game",
+        current: req.cookies.wikiracer.current,
+        end: req.cookies.wikiracer.end,
+        steps: req.cookies.wikiracer.steps
+      })
+    }
   }
 })
 app.get("/2pages", function(req, res) {
   res.clearCookie('wikiracer');
-  if (req.cookies.pages){
+  if (req.cookies.pages) {
     res.redirect("/2pages/game");
-  }
-  else{
+  } else {
     res.render('2pages', {
       banner: "WikiRacer: 2Pages",
       errorMsg: 'hidden'
     })
   }
 })
-app.get("/2pages/game",function(req,res){
+app.get("/2pages/game", function(req, res) {
   res.clearCookie('wikiracer');
-  if (!req.cookies.pages){
+  if (!req.cookies.pages) {
     res.redirect("/2pages")
-  }else{
-    res.render("2pagesGame",{
-      banner: "2Pages: Game",
-      cLeft: req.cookies.pages.cLeft,
-      cRight: req.cookies.pages.cRight,
-      steps: req.cookies.pages.steps
-    })
+  } else {
+    var cLeft = req.cookies.pages.cLeft;
+    var cRight = req.cookies.pages.cRight;
+    if (cLeft === cRight) {
+      res.render("2pagesVictory", {
+        banner: "2pages: Victory!",
+        lStart: req.cookies.pages.cLeft,
+        rStart: req.cookies.pages.rStart,
+        cLeft: req.cookies.pages.cLeft,
+        steps: req.cookies.pages.steps
+      })
+    } else {
+      res.render("2pagesGame", {
+        banner: "2Pages: Game",
+        cLeft: req.cookies.pages.cLeft,
+        cRight: req.cookies.pages.cRight,
+        steps: req.cookies.pages.steps
+      })
+    }
   }
 })
 
