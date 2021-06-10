@@ -27,6 +27,7 @@ app.use(cookieParser());
 // connection.connect();
 
 //FIX THIS ADD DOTENV FILE
+//FIX THIS: Track pages and display them on finishing screen
 //FIX THIS ADD PROPER MYSQL FOR HIGH SCORES
 
 app.get("/", function(req, res) {
@@ -57,6 +58,18 @@ app.get("/wikiracer", function(req, res) {
     })
   }
 })
+app.get("/2pages", function(req, res) {
+  res.clearCookie('wikiracer');
+  if (req.cookies.pages) {
+    res.redirect("/2pages/game");
+  } else {
+    res.render('2pages', {
+      banner: "WikiRacer: 2Pages",
+      errorMsg: 'hidden'
+    })
+  }
+})
+
 app.get("/checkit", function(req, res) {
   var random = req.query.random;
   // console.log(random);
@@ -291,6 +304,18 @@ app.get("/checkit2", function(req, res) {
   }
 })
 
+app.get("/restart",function(req,res){
+  res.clearCookie("wikiracer");
+  res.clearCookie("pages");
+  res.redirect("/wikiracer");
+
+})
+app.get("/restart2",function(req,res){
+  res.clearCookie("wikiracer");
+  res.clearCookie("pages");
+  res.redirect("/2pages");
+})
+
 app.get("/wikiracer/game", function(req, res) {
   res.clearCookie('pages');
   if (!req.cookies.wikiracer) {
@@ -315,17 +340,6 @@ app.get("/wikiracer/game", function(req, res) {
         steps: req.cookies.wikiracer.steps
       })
     }
-  }
-})
-app.get("/2pages", function(req, res) {
-  res.clearCookie('wikiracer');
-  if (req.cookies.pages) {
-    res.redirect("/2pages/game");
-  } else {
-    res.render('2pages', {
-      banner: "WikiRacer: 2Pages",
-      errorMsg: 'hidden'
-    })
   }
 })
 app.get("/2pages/game", function(req, res) {
