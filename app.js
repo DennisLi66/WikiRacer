@@ -325,7 +325,6 @@ app.get("/wikiracer/game", function(req, res) {
     var current = req.cookies.wikiracer.current;
     var end = req.cookies.wikiracer.end;
     if (current === end) {
-      //redirect to victory page
       res.render("wikiRacerVictory", {
         banner: "WikiRacer: Game - Victory!",
         start: req.cookies.wikiracer.start,
@@ -333,11 +332,21 @@ app.get("/wikiracer/game", function(req, res) {
         steps: req.cookies.wikiracer.steps
       })
     } else {
-      res.render("wikiRacerGame", {
-        banner: "WikiRacer: Game",
-        current: req.cookies.wikiracer.current,
-        end: req.cookies.wikiracer.end,
-        steps: req.cookies.wikiracer.steps
+      //grab external links available on page
+      wiki().page(current).then(page => {
+        console.log(page);
+        res.render("wikiRacerGame", {
+          banner: "WikiRacer: Game",
+          current: req.cookies.wikiracer.current,
+          end: req.cookies.wikiracer.end,
+          steps: req.cookies.wikiracer.steps
+        })
+      }, error => {
+        //send to error page
+        res.render("errorFetchingLinks",{
+          banner: "WikiRacer: Error Fetching Links",
+          gameType: "wikiRacer"
+        })
       })
     }
   }
@@ -358,11 +367,27 @@ app.get("/2pages/game", function(req, res) {
         steps: req.cookies.pages.steps
       })
     } else {
-      res.render("2pagesGame", {
-        banner: "2Pages: Game",
-        cLeft: req.cookies.pages.cLeft,
-        cRight: req.cookies.pages.cRight,
-        steps: req.cookies.pages.steps
+      wiki().page(cLeft).then(page => {
+        console.log(page);
+        wiki().page(cRight).then(page1 => {
+          console.log(page1)
+          res.render("2pagesGame", {
+            banner: "2Pages: Game",
+            cLeft: req.cookies.pages.cLeft,
+            cRight: req.cookies.pages.cRight,
+            steps: req.cookies.pages.steps
+          })
+        },error => {
+          res.render("errorFetchingLinks",{
+            banner: "WikiRacer: Error Fetching Links",
+            gameType: "2pages"
+          });
+        })
+      }, error => {
+        res.render("errorFetchingLinks",{
+          banner: "WikiRacer: Error Fetching Links",
+          gameType: "2pages"
+        })
       })
     }
   }
