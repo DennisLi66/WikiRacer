@@ -333,18 +333,33 @@ app.get("/wikiracer/game", function(req, res) {
       })
     } else {
       //grab external links available on page
-      wiki().page(current).then(page => {
-        console.log(page);
-        res.render("wikiRacerGame", {
-          banner: "WikiRacer: Game",
-          current: req.cookies.wikiracer.current,
-          end: req.cookies.wikiracer.end,
-          steps: req.cookies.wikiracer.steps
+      console.log(current);
+      wiki().page(current).then(
+        page => {
+        // console.log(page);
+        page.links().then(links => {
+          console.log(links);
+          // //Change amount of steps
+          // var steps = req.cookies.wikiracer.steps + 1;
+          // // res.cookies.wikiracer.steps = steps;
+          // // res.render("wikiRacerGame", {
+          // //   banner: "WikiRacer: Game",
+          // //   current: req.cookies.wikiracer.current,
+          // //   end: req.cookies.wikiracer.end,
+          // //   steps: steps,
+          // //   links: links
+          // // })
+        }, error => {
+          console.log(error);
+          res.render("errorFetchingLinks",{
+            banner: "WikiRacer: Error Fetching Links",
+            gameType: "wikiRacer"
+          })
         })
       }, error => {
         //send to error page
         res.render("errorFetchingLinks",{
-          banner: "WikiRacer: Error Fetching Links",
+          banner: "WikiRacer: Error Finding Page",
           gameType: "wikiRacer"
         })
       })

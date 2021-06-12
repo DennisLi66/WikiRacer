@@ -1,13 +1,12 @@
 <%- include('headFoot/header') %>
-<%- include('headFoot/2PagesBar') %>
 
 Unforunately, something has gone wrong.
 
-Refresh the page or click here to try again.
-<% if (gameType === 'wiki'){ %>
-    <a href='/wikiRacer' class='btn btn-dark'> Refresh </a>
+Refresh the page or click here to try again.<br>
+<% if (gameType === 'wikiRacer'){ %>
+    <a href='/wikiRacer/game' class='btn btn-dark'> Refresh </a>
 <% } else if (gameType === '2pages') {%>
-  <a href='/2pages' class='btn btn-dark'> Refresh </a>
+  <a href='/2pages/game' class='btn btn-dark'> Refresh </a>
 <% } %>
 
 <%- include('headFoot/footer') %>
