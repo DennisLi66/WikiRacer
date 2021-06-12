@@ -7,6 +7,9 @@ const mysql = require('mysql');
 const bcrypt = require('bcrypt');
 const randomatic = require('randomatic');
 const wiki = require('wikijs').default;
+
+const axios = require('axios');
+const cheerio = require('cheerio');
 // import getPoints from '/javascript/sampleArticles.js'
 //Maybe check that the starting points arent the same FIX THIS
 
@@ -317,7 +320,6 @@ app.get("/restart2",function(req,res){
 })
 
 app.get("/wikiracer/game", function(req, res) {
-  res.clearCookie('pages');
   if (!req.cookies.wikiracer) {
     console.log("Not Allowed!")
     res.redirect("/wikiracer");
@@ -339,16 +341,16 @@ app.get("/wikiracer/game", function(req, res) {
         // console.log(page);
         page.links().then(links => {
           console.log(links);
-          // //Change amount of steps
-          // var steps = req.cookies.wikiracer.steps + 1;
-          // // res.cookies.wikiracer.steps = steps;
-          // // res.render("wikiRacerGame", {
-          // //   banner: "WikiRacer: Game",
-          // //   current: req.cookies.wikiracer.current,
-          // //   end: req.cookies.wikiracer.end,
-          // //   steps: steps,
-          // //   links: links
-          // // })
+          //Change amount of steps
+          var steps = req.cookies.wikiracer.steps + 1;
+          res.cookies.wikiracer.steps = steps;
+          res.render("wikiRacerGame", {
+            banner: "WikiRacer: Game",
+            current: req.cookies.wikiracer.current,
+            end: req.cookies.wikiracer.end,
+            steps: steps,
+            links: links
+          })
         }, error => {
           console.log(error);
           res.render("errorFetchingLinks",{
@@ -367,7 +369,6 @@ app.get("/wikiracer/game", function(req, res) {
   }
 })
 app.get("/2pages/game", function(req, res) {
-  res.clearCookie('wikiracer');
   if (!req.cookies.pages) {
     res.redirect("/2pages")
   } else {
@@ -383,29 +384,69 @@ app.get("/2pages/game", function(req, res) {
       })
     } else {
       wiki().page(cLeft).then(page => {
-        console.log(page);
+        console.log(page.title);
+        page.links().then(links =>{
+          console.log(links)
+        })
         wiki().page(cRight).then(page1 => {
-          console.log(page1)
+          console.log(page1.title);
           res.render("2pagesGame", {
             banner: "2Pages: Game",
             cLeft: req.cookies.pages.cLeft,
             cRight: req.cookies.pages.cRight,
             steps: req.cookies.pages.steps
           })
-        },error => {
+
+
+
+
+
+
+
+
+        },
+        error => {
+          console.log(error);
           res.render("errorFetchingLinks",{
             banner: "WikiRacer: Error Fetching Links",
             gameType: "2pages"
           });
         })
-      }, error => {
+      },
+      error => {
+        console.log(error);
         res.render("errorFetchingLinks",{
-          banner: "WikiRacer: Error Fetching Links",
+          banner: "WikiRacer: Error Fetching Page",
           gameType: "2pages"
         })
       })
     }
   }
+})
+
+app.get("/test",function(req,res){
+  axios("https://en.wikipedia.org/wiki/Abraham_Lincoln")
+    .then(response => {
+      const html = response.data;
+      // console.log(html);
+      const $ = cheerio.load(html);
+      var links = $('a');
+      //Create a set and push all the elements in there
+      //Remove Image Links
+      const linkSet = new Set();
+      for (let i = 0 ; i < links.length; i++){
+        var regex = '^\/wiki\/[\-.,%"\'#_\(\)A-Za-z0-9]+$';
+        if (links[i].attribs && links[i].attribs.title && links[i].attribs.href && links[i].attribs.href.match(regex)){
+          // console.log(links[i].attribs.href);
+          linkSet.add(links[i].attribs.title);
+        }
+      }
+      res.render("testFiles/test",{
+        banner: "WikiRacer: Test Page",
+        html: linkSet
+      })
+    })
+
 })
 
 app.listen(3000, function() {
