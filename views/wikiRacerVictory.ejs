@@ -6,12 +6,26 @@ You reached <%= end %> from <%= start %> in <%= steps %> steps.
   <a class="btn btn-dark" href='/restart'> New Game </a>
 
   <h2> History </h2>
-  Add a Table Here
-  <%= start %><br>
-  <% for (let x = 0; x < history.length; x++){%>
-    <%= history[x] %>
-    <br>
-  <% } %>
+  <table class="table">
+    <thead>
+      <tr>
+        <th scope='col'> Step Number </th>
+        <th scope='col'> Wikipedia Article Title</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td scope="col"> 0 </td>
+        <td scope="col"> <%= start %> </td>
+      </tr>
+      <% for (let x = 1; x < history.length; x++){%>
+        <tr>
+          <td scope="col"> <%= x  %> </td>
+          <td scope="col"> <%= history[x] %> </td>
+        </tr>
+      <% } %>
+    </tbody>
+  </table>
 
 
 <%- include('headFoot/footer') %>

@@ -13,6 +13,10 @@ const cheerio = require('cheerio');
 // import getPoints from '/javascript/sampleArticles.js'
 //Maybe check that the starting points arent the same FIX THIS
 
+//FIX THIS: Normalize the search terms. Change underscores to spaces then to lowercase and encodeduri, etc
+
+
+
 const app = express();
 app.use(express.static("public"));
 app.set('view engine', 'ejs');
@@ -333,7 +337,7 @@ app.route("/wikiracer/game")
   else {
     var current = req.cookies.wikiracer.current;
     var end = req.cookies.wikiracer.end;
-    if (current === end) {
+    if (current.toLowerCase() === end.toLowerCase()) {
       var splList = req.cookies.wikiracer.history.split('^');
       res.render("wikiRacerVictory", {
         banner: "WikiRacer: Game - Victory!",
@@ -391,7 +395,9 @@ app.route("/2pages/game")
     } else {
       var cLeft = req.cookies.pages.cLeft;
       var cRight = req.cookies.pages.cRight;
-      if (cLeft === cRight) {
+      // console.log(encodeURI(cLeft));
+      // console.log(cRight.toLowerCase());
+      if (cLeft.toLowerCase() === cRight.toLowerCase()) {
         res.render("2pagesVictory", {
           banner: "2pages: Victory!",
           lStart: req.cookies.pages.cLeft,
