@@ -1,8 +1,13 @@
 <%- include('headFoot/header') %>
 <%- include('headFoot/wikiRacerBar') %>
-
+<script src="/javascript/handleLinks.js"></script>
 <h1> <%= current %> </h1>
+<form action='?' method='post' id='linkForm'>
+  <input type='hidden' name='link' id='link' value=''>
+  <% for (let item of links) { %>
 
+  <a href="javascript:submitThisLink('<%= item %>')"><%= item %></a><br>
 
-
+  <% } %>
+</form>
 <%- include('headFoot/footer') %>

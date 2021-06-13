@@ -350,6 +350,7 @@ app.route("/wikiracer/game")
               linkSet.add(links[i].attribs.title);
             }
           }
+          console.log(linkSet);
           res.render('wikiRacerGame',{
             current: req.cookies.wikiracer.current,
             end: req.cookies.wikiracer.end,
