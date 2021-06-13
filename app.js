@@ -81,13 +81,14 @@ app.get("/checkit", function(req, res) {
     wiki().random(2).then(results => {
       var start = results[0].replace(/ /g, "_");
       var end = results[1].replace(/ /g, "_");
-      console.log(start);
-      console.log(end);
+      //console.log(start);
+      //console.log(end);
       let cookieObj = {
         start: start,
         current: start,
         end: end,
-        steps: 0
+        steps: 0,
+        history: ''
       }
       res.cookie("wikiracer", cookieObj);
       res.redirect("/wikiracer/game");
@@ -328,11 +329,13 @@ app.route("/wikiracer/game")
     var current = req.cookies.wikiracer.current;
     var end = req.cookies.wikiracer.end;
     if (current === end) {
+      var splList = req.cookies.wikiracer.history.split('^');
       res.render("wikiRacerVictory", {
         banner: "WikiRacer: Game - Victory!",
         start: req.cookies.wikiracer.start,
         end: req.cookies.wikiracer.end,
-        steps: req.cookies.wikiracer.steps
+        steps: req.cookies.wikiracer.steps,
+        history: splList
       })
     } else {
       var url = encodeURI('https://en.wikipedia.org/wiki/' + current);
@@ -346,11 +349,14 @@ app.route("/wikiracer/game")
           const linkSet = new Set();
           for (let i = 0; i < links.length; i++) {
             var regex = '^\/wiki\/[\-.,%"\'#_\(\)A-Za-z0-9]+$';
-            if (links[i].attribs && links[i].attribs.title && links[i].attribs.href && links[i].attribs.href.match(regex)) {
+            if (links[i].attribs && links[i].attribs.title && links[i].attribs.href
+              && links[i].attribs.href.match(regex) && links[i].attribs.href !== '/wiki/Main_Page'
+                 && links[i].attribs.href !== '/wiki/' + current.replace(/ /g,"_") ) {
               linkSet.add(links[i].attribs.title);
+              //console.log(links[i].attribs.href);
             }
           }
-          console.log(linkSet);
+          //console.log(linkSet);
           res.render('wikiRacerGame',{
             current: req.cookies.wikiracer.current,
             end: req.cookies.wikiracer.end,
@@ -363,9 +369,19 @@ app.route("/wikiracer/game")
   }
 })
   .post(function(req,res){
-          // update cookies here
-          //increase step and change current
-          //redirect to the get page
+    console.log(req.body.link);
+    // update cookies here
+    //increase step and change current
+    //redirect to the get page
+    var newCookie = {
+      start: req.cookies.wikiracer.start,
+      current: req.body.link,
+      end: req.cookies.wikiracer.end,
+      steps: req.cookies.wikiracer.steps + 1,
+      history: req.cookies.wikiracer.history + '^' + req.body.link
+    };
+    res.cookie("wikiracer",newCookie);
+    res.redirect("back")
   })
 app.get("/2pages/game", function(req, res) {
   if (!req.cookies.pages) {

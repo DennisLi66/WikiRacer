@@ -5,5 +5,13 @@ You reached <%= end %> from <%= start %> in <%= steps %> steps.
 
   <a class="btn btn-dark" href='/restart'> New Game </a>
 
+  <h2> History </h2>
+  Add a Table Here
+  <%= start %><br>
+  <% for (let x = 1; x < history.length; x++){%>
+    <%= history[x] %>
+    <br>
+  <% } %>
+
 
 <%- include('headFoot/footer') %>
