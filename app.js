@@ -319,11 +319,12 @@ app.get("/restart2",function(req,res){
   res.redirect("/2pages");
 })
 
-app.get("/wikiracer/game", function(req, res) {
+app.route("/wikiracer/game")
+  .get(function(req, res) {
   if (!req.cookies.wikiracer) {
     console.log("Not Allowed!")
-    res.redirect("/wikiracer");
-  } else {
+    res.redirect("/wikiracer");}
+  else {
     var current = req.cookies.wikiracer.current;
     var end = req.cookies.wikiracer.end;
     if (current === end) {
@@ -334,40 +335,37 @@ app.get("/wikiracer/game", function(req, res) {
         steps: req.cookies.wikiracer.steps
       })
     } else {
-      //grab external links available on page
-      console.log(current);
-      wiki().page(current).then(
-        page => {
-        // console.log(page);
-        page.links().then(links => {
-          console.log(links);
-          //Change amount of steps
-          var steps = req.cookies.wikiracer.steps + 1;
-          res.cookies.wikiracer.steps = steps;
-          res.render("wikiRacerGame", {
-            banner: "WikiRacer: Game",
+      var url = encodeURI('https://en.wikipedia.org/wiki/' + current);
+      // console.log(url);
+      axios(url)
+        .then(response =>
+          {
+          const html = response.data;
+          const $ = cheerio.load(html);
+          var links = $('a');
+          const linkSet = new Set();
+          for (let i = 0; i < links.length; i++) {
+            var regex = '^\/wiki\/[\-.,%"\'#_\(\)A-Za-z0-9]+$';
+            if (links[i].attribs && links[i].attribs.title && links[i].attribs.href && links[i].attribs.href.match(regex)) {
+              linkSet.add(links[i].attribs.title);
+            }
+          }
+          res.render('wikiRacerGame',{
             current: req.cookies.wikiracer.current,
             end: req.cookies.wikiracer.end,
-            steps: steps,
-            links: links
-          })
-        }, error => {
-          console.log(error);
-          res.render("errorFetchingLinks",{
-            banner: "WikiRacer: Error Fetching Links",
-            gameType: "wikiRacer"
+            banner: 'WikiRacer: Game',
+            links: linkSet,
+            steps: req.cookies.wikiracer.steps
           })
         })
-      }, error => {
-        //send to error page
-        res.render("errorFetchingLinks",{
-          banner: "WikiRacer: Error Finding Page",
-          gameType: "wikiRacer"
-        })
-      })
     }
   }
 })
+  .post(function(req,res){
+          // update cookies here
+          //increase step and change current
+          //redirect to the get page
+  })
 app.get("/2pages/game", function(req, res) {
   if (!req.cookies.pages) {
     res.redirect("/2pages")
