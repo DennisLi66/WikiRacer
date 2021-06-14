@@ -456,7 +456,35 @@ app.route("/2pages/game")
       }
     }
   })
-
+  .post(function(req,res){
+    var orientation = req.body.orientation;
+    var link = req.body.link;
+    var newCookie;
+    if (orientation === 'L'){
+      var newCookie = {
+        lStart: req.cookies.pages.lStart,
+        rStart: req.cookies.pages.rStart,
+        cLeft: req.body.link,
+        cRight: req.cookies.pages.cRight,
+        steps: req.cookies.pages.steps + 1,
+        history: req.cookies.pages.history + '^' + req.body.link,
+        orientation: req.cookies.page.orientation + req.body.orientation
+      };
+    }
+    else if (orientation === 'R'){
+      var newCookie = {
+        lStart: req.cookies.pages.lStart,
+        rStart: req.cookies.pages.rStart,
+        cLeft: req.cookies.pages.cLeft,
+        cRight: req.body.link,
+        steps: req.cookies.pages.steps + 1,
+        history: req.cookies.pages.history + '^' + req.body.link,
+        orientation: req.cookies.pages.orientation + req.body.orientation
+      };
+    }
+    res.cookie("pages",newCookie);
+    res.redirect('back');
+  })
 
 app.get("/test",function(req,res){
   axios("https://en.wikipedia.org/wiki/Abraham_Lincoln")
