@@ -1,10 +1,30 @@
 <%- include('headFoot/header') %>
 <%- include('headFoot/2PagesBar') %>
+<script src="/javascript/handleLinks.js"></script>
+Maybe change to checklist
 
-<div class="leftLinks">
-  </div>
+<div class="leftLinks half">
+  <h2> <%= cLeft %> </h2>
+  <form action='?' method='post' id='linkFormLeft'>
+      <input type='hidden' name='link' id='link1' value=''>
+      <input type="hidden" name="orientation" value='L'>
+      <% for (let item of linksLeft) { %>
+        <a href="javascript:submitThisLinkLeft('<%= item %>')"><%= item %></a><br>
+      <% } %>
 
-  <div class="rightLinks">
-    </div>
+  </form>
+</div>
+<div class="rightLinks half">
+  <h2> <%= cRight %> </h2>
+  <form action='?' method='post' id='linkFormRight'>
+      <input type='hidden' name='link' id='link2' value=''>
+      <input type="hidden" name="orientation" value='R'>
+      <% for (let item of linksRight) { %>
+        <a href="javascript:submitThisLinkRight('<%= item %>')"><%= item %></a><br>
+      <% } %>
+
+  </form>
+</div>
+
 
 <%- include('headFoot/footer') %>
