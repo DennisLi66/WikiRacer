@@ -62,3 +62,9 @@ function extractStarts(){
     `;
   }
 }
+
+function normalize(data){
+  //constant  casing
+  //change spaces to underscores
+  return data.toUpperCase().replace(/ /g,"_");;
+}

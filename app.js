@@ -337,7 +337,7 @@ app.route("/wikiracer/game")
   else {
     var current = req.cookies.wikiracer.current;
     var end = req.cookies.wikiracer.end;
-    if (current.toLowerCase() === end.toLowerCase()) {
+    if (current.toUpperCase().replace(/ /g,"_") === end.toUpperCase().replace(/ /g,"_")) {
       var splList = req.cookies.wikiracer.history.split('^');
       res.render("wikiRacerVictory", {
         banner: "WikiRacer: Game - Victory!",
@@ -397,7 +397,7 @@ app.route("/2pages/game")
       var cRight = req.cookies.pages.cRight;
       // console.log(encodeURI(cLeft));
       // console.log(cRight.toLowerCase());
-      if (cLeft.toLowerCase() === cRight.toLowerCase()) {
+      if (cLeft.toUpperCase().replace(/ /g,"_") === cRight.toUpperCase().replace(/ /g,"_")) {
         res.render("2pagesVictory", {
           banner: "2pages: Victory!",
           lStart: req.cookies.pages.cLeft,
