@@ -8,10 +8,11 @@ Maybe change to checklist
   <form action='?' method='post' id='linkFormLeft'>
       <input type='hidden' name='link' id='link1' value=''>
       <input type="hidden" name="orientation" value='L'>
+      <ol>
       <% for (let item of linksLeft) { %>
-        <a href="javascript:submitThisLinkLeft('<%= item %>')"><%= item %></a><br>
+      <li>  <a href="javascript:submitThisLinkLeft('<%= item %>')"><%= item %></a></li><br>
       <% } %>
-
+      </ol>
   </form>
 </div>
 <div class="rightLinks half">
@@ -19,10 +20,11 @@ Maybe change to checklist
   <form action='?' method='post' id='linkFormRight'>
       <input type='hidden' name='link' id='link2' value=''>
       <input type="hidden" name="orientation" value='R'>
+      <ol>
       <% for (let item of linksRight) { %>
-        <a href="javascript:submitThisLinkRight('<%= item %>')"><%= item %></a><br>
+      <li>  <a href="javascript:submitThisLinkRight('<%= item %>')"><%= item %></a></li><br>
       <% } %>
-
+      </ol>
   </form>
 </div>
 

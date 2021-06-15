@@ -4,10 +4,12 @@
 <h1> <%= current %> </h1>
 <form action='?' method='post' id='linkForm'>
   <input type='hidden' name='link' id='link' value=''>
+  <ol>
   <% for (let item of links) { %>
 
-  <a href="javascript:submitThisLink('<%= item %>')"><%= item %></a><br>
+  <li><a href="javascript:submitThisLink('<%= item %>')"><%= item %></a></li><br>
 
   <% } %>
+  </ol>
 </form>
 <%- include('headFoot/footer') %>
