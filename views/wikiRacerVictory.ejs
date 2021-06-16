@@ -1,10 +1,10 @@
 <%- include('headFoot/header') %>
-
+<div class='centerInfo'>
 <h1> Congratulations! </h1>
 You reached <%= end %> from <%= start %> in <%= steps %> steps.
-
+<br><br>
   <a class="btn btn-dark" href='/restart'> New Game </a>
-
+<br><br>
   <h2> History </h2>
   <table class="table">
     <thead>
@@ -27,5 +27,5 @@ You reached <%= end %> from <%= start %> in <%= steps %> steps.
     </tbody>
   </table>
 
-
+</div>
 <%- include('headFoot/footer') %>

@@ -22,5 +22,23 @@
   width: 50%;
   position: absolute;
         float:left;
-  height: auto
+  height: auto;
+  text-align: center;
+}
+
+.centerBox{
+  text-align: center;
+  position: fixed;
+  top: 40%;
+  left: 42%;
+  margin-top: -50px;
+  margin-left: -100px;
+}
+
+.centerInfo{
+  text-align: center;
+}
+
+.statusBar{
+  text-align: center;
 }

@@ -1,8 +1,10 @@
 <%- include('headFoot/header') %>
 <script src="/javascript/sampleArticles.js"></script>
 <script src="/javascript/accessWikipedia.js"></script>
+<div class='centerInfo'>
 <div class='errorMsg' <%= errorMsg %>> The terms you inputted were not both valid. </div>
 <div id="notices"></div>
+<br><br><br>
 <h1> WikiRacer </h1>
 If you have two Wikipedia articles in mind, you can put their article titles here.
 <br>
@@ -13,12 +15,14 @@ If you have two Wikipedia articles in mind, you can put their article titles her
 <label for="end">Ending Wikipedia Article: </label><br>
 <input id='endPoint' name="end"><br>
 </form>
+<br>
 <button onclick="extractUserInputs()" class="btn btn-dark">Confirm Choices</button>
 <br>
+<br>
 <button onclick="getTwoArticlesFair()" class="btn btn-dark"> Two Fair Random Curated Articles </button>
-<br>
+<br><br>
 <button onclick="getTwoArticlesChaos()" class="btn btn-dark"> Any Two Random Curated Articles </button>
-<br>
+<br><br>
 <button onclick="getTrueChaos()" class="btn btn-dark"> ANY Two Random Wikipedia Articles </button>
-
+</div>
 <%- include('headFoot/footer') %>
