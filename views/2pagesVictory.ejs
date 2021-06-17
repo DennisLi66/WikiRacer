@@ -1,11 +1,43 @@
 <%- include('headFoot/header') %>
 
-<h1> Congratulations! </h1>
-You reached <%= cLeft %> from <%= lStart %> and <%= rStart %> in <%= steps %> steps.
+<div class='centerInfo'>
 
+  <h1> Congratulations! </h1>
+  You reached <%= current %> from <%= lStart %> and <%= rStart %> in <%= steps %> steps.
+  <br><br>
   <a class="btn btn-dark" href='/restart2'> New Game </a>
-
-
-
-
+  <br>
+  <table class='table'>
+    <thead>
+      <tr>
+        <th scope='col'> Step Number </th>
+        <th scope='col'> Left Wikipedia Article </th>
+        <th scope='col'> Right Wikipedia Article </th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td scope="col"> 0 </td>
+        <td scope="col"> <%= lStart %> </td>
+        <td scope="col"> <%= rStart %> </td>
+        <% var nowLeft = lStart; var nowRight = rStart; %>
+      </tr>
+      <% for (let x = 1; x < history.length; x++) {%>
+      <tr>
+        <td scope='col'> <%= x %> </td>
+        <% console.log(orientation[x]) %>
+        <% if (orientation[x-1] === 'L'){ %>
+        <td scope='col'> <%= history[x] %> </td>
+        <td scope='col'> <%= nowRight %> </td>
+        <% nowLeft = history[x] %>
+        <% } else if (orientation[x-1] === 'R'){ %>
+        <td scope='col'> <%= nowLeft %> </td>
+        <td scope='col'> <%= history[x] %> </td>
+        <% nowRight= history[x]; %>
+        <% }%>
+      </tr>
+      <% } %>
+    </tbody>
+  </table>
+</div>
 <%- include('headFoot/footer') %>

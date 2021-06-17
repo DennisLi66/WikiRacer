@@ -10,12 +10,6 @@ const wiki = require('wikijs').default;
 
 const axios = require('axios');
 const cheerio = require('cheerio');
-// import getPoints from '/javascript/sampleArticles.js'
-//Maybe check that the starting points arent the same FIX THIS
-
-//FIX THIS: Normalize the search terms. Change underscores to spaces then to lowercase and encodeduri, etc
-
-
 
 const app = express();
 app.use(express.static("public"));
@@ -24,18 +18,8 @@ app.use(bodyParser.urlencoded({
   extended: true
 }));
 app.use(cookieParser());
-// var connection = mysql.createConnection({
-//   host: process.env.HOST,
-//   user: process.env.USER,
-//   password: process.env.PASSWORD,
-//   database: process.env.DATABASE,
-//   multipleStatements: true
-// })
-// connection.connect();
 
-//FIX THIS ADD DOTENV FILE
 //FIX THIS: Track pages and display them on finishing screen
-//FIX THIS ADD PROPER MYSQL FOR HIGH SCORES
 
 app.get("/", function(req, res) {
   res.clearCookie('pages');
@@ -395,15 +379,16 @@ app.route("/2pages/game")
     } else {
       var cLeft = req.cookies.pages.cLeft;
       var cRight = req.cookies.pages.cRight;
-      // console.log(encodeURI(cLeft));
-      // console.log(cRight.toLowerCase());
       if (cLeft.toUpperCase().replace(/ /g,"_") === cRight.toUpperCase().replace(/ /g,"_")) {
+        //Convert History and Orientation into lists
         res.render("2pagesVictory", {
           banner: "2pages: Victory!",
-          lStart: req.cookies.pages.cLeft,
+          lStart: req.cookies.pages.lStart,
           rStart: req.cookies.pages.rStart,
-          cLeft: req.cookies.pages.cLeft,
-          steps: req.cookies.pages.steps
+          current: req.cookies.pages.cLeft,
+          steps: req.cookies.pages.steps,
+          history: req.cookies.pages.history.split('^'),
+          orientation: req.cookies.pages.orientation
         })
       } else {
         var url1 = encodeURI('https://en.wikipedia.org/wiki/' + cLeft);
@@ -468,7 +453,7 @@ app.route("/2pages/game")
         cRight: req.cookies.pages.cRight,
         steps: req.cookies.pages.steps + 1,
         history: req.cookies.pages.history + '^' + req.body.link,
-        orientation: req.cookies.page.orientation + req.body.orientation
+        orientation: req.cookies.pages.orientation + req.body.orientation
       };
     }
     else if (orientation === 'R'){
