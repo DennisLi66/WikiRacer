@@ -1,6 +1,7 @@
 <div class='statusBar'>
+    <script src="/javascript/bar.js"></script>
   <b>Current:</b> <%= current %>
-  <b>Destination:</b> <%= end %>
+  <b>Destination:</b> <a href='javascript:openArticle("<%= end %>")'><%= end %></a>
   <b>Steps Made:</b> <%= steps %>
   <br><br>
   <a class="btn btn-dark" href='/restart'> Restart </a>

@@ -6,7 +6,7 @@
   You reached <%= current %> from <%= lStart %> and <%= rStart %> in <%= steps %> steps.
   <br><br>
   <a class="btn btn-dark" href='/restart2'> New Game </a>
-  <br>
+  <br>  <br><br>
   <table class='table'>
     <thead>
       <tr>
@@ -25,7 +25,6 @@
       <% for (let x = 1; x < history.length; x++) {%>
       <tr>
         <td scope='col'> <%= x %> </td>
-        <% console.log(orientation[x]) %>
         <% if (orientation[x-1] === 'L'){ %>
         <td scope='col'> <%= history[x] %> </td>
         <td scope='col'> <%= nowRight %> </td>
