@@ -3,9 +3,6 @@ const express = require("express");
 const bodyParser = require("body-parser");
 const ejs = require("ejs");
 const cookieParser = require('cookie-parser');
-const mysql = require('mysql');
-const bcrypt = require('bcrypt');
-const randomatic = require('randomatic');
 const wiki = require('wikijs').default;
 
 const axios = require('axios');
@@ -18,8 +15,6 @@ app.use(bodyParser.urlencoded({
   extended: true
 }));
 app.use(cookieParser());
-
-//FIX THIS: Track pages and display them on finishing screen
 
 app.get("/", function(req, res) {
   res.clearCookie('pages');
